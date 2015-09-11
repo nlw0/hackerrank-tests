@@ -7,24 +7,26 @@ object Solution {
     val input: Iterator[String] = is.getLines()
     val data = readInput(input)
 
-    val result = data.take(1) ++ (data.sliding(3, 1) map findmax) ++ data.takeRight(1)
+    val result = if (data.length>2)
+      data.take(1) ++ (data.sliding(3, 1) map (findMax(_).mkString)) ++ data.takeRight(1)
+    else
+      data
     result foreach println
   }
 
-  def findmax(abc: Seq[String]) = {
-    val Seq(a, b, c) = abc
-    for (i <- b.indices)
-      yield if (i > 0 && i < b.length - 1 && Vector(a(i), c(i), b(i - 1), b(i + 1)).forall(_ < b(i))'X'
-      else b(i)
-  }
+  def findMax(abc: Seq[String]) =
+    abc match {
+      case Seq(a, b, c) =>
+        for (i <- b.indices)
+          yield if ((i > 0) && i < (b.length - 1) &&
+                    Vector(a(i), c(i), b(i - 1), b(i + 1)).forall(_ < b(i))) 'X'
+          else b(i)
+      case _ =>
+        abc
+    }
 
   def readInput(input: Iterator[String]) = {
-    val n = readIn(input)
-    for (_ <- 1 to n) yield readVector(input, n)
+    val n = input.next().toInt
+    for (i <- 1 to n) yield input.next()
   }
-
-  def readVector(input: Iterator[String], size: Int) =
-    input.next().split(" ").take(size).map(_.toInt).toVector
-
-  def readInt(input: Iterator[String]) = input.next().toInt
 }

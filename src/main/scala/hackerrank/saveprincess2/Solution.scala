@@ -1,3 +1,4 @@
+/*
 package hackerrank.saveprincess2
 
 
@@ -36,3 +37,4 @@ object Solution {
   }
 
 }
+*/
